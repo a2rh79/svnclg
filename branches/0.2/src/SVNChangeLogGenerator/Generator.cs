@@ -11,16 +11,16 @@ namespace SVNChangeLogGenerator
 {
     class Generator
     {
-        StringTemplateGroup m_ClGrp = new StringTemplateGroup("ChangeLogGroup", (string)null);
+        private StringTemplateGroup m_ClGrp = new StringTemplateGroup("ChangeLogGroup", (string)null);
 
-        public string GenerateLog(XmlDocument log, Dictionary<string, object> additionalClgArgs)
+        public string GenerateLog(XmlDocument log, Dictionary<ArgumentManager.Args, object> arguments)
         {
             XmlNodeList logEntries = log.GetElementsByTagName("logentry");
             List<ChangelogEntry> clEntries;
 
-            if (additionalClgArgs.ContainsKey("Ranges"))
+            if (arguments.ContainsKey(ArgumentManager.Args.ranges))
             {
-                clEntries = (List<ChangelogEntry>)additionalClgArgs["Ranges"];
+                clEntries = (List<ChangelogEntry>)arguments[ArgumentManager.Args.ranges];
             }
             else
             {
@@ -33,7 +33,7 @@ namespace SVNChangeLogGenerator
                 int revision;
                 int.TryParse(revisionString, out revision);
 
-                if (additionalClgArgs.ContainsKey("Ranges"))
+                if (arguments.ContainsKey(ArgumentManager.Args.ranges))
                 {
                     foreach (ChangelogEntry cle in clEntries)
                     {
@@ -53,7 +53,7 @@ namespace SVNChangeLogGenerator
                 }
             }
 
-            if (additionalClgArgs.ContainsKey("Swap"))
+            if (arguments.ContainsKey(ArgumentManager.Args.swap))
             {
                 clEntries.Reverse();
             }
@@ -105,7 +105,7 @@ namespace SVNChangeLogGenerator
                 {
                     StringTemplate logEntry = m_ClGrp.GetInstanceOf("Templates/ChangeLog");
                     logEntry.SetAttribute("date", cle.Dates[0]);
-                    logEntry.SetAttribute("version", cle.Version);
+                    logEntry.SetAttribute("version", cle.VersionString);
                     logEntry.SetAttribute("revisions", cle.Revisions);
                     logEntry.SetAttribute("msg", cle.Msg);
                     logEntry.SetAttribute("path", cle.Paths);

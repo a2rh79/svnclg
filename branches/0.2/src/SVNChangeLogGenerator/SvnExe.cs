@@ -14,12 +14,12 @@ namespace SVNChangeLogGenerator
         private string m_SvnPath = "svn.exe";
         private readonly string m_SvnLogArguments = "log --xml -v ";
 
-        public XmlDocument GetLog(string repoPath, IEnumerable<string> additionalSvnArgs)
+        public XmlDocument GetLog(Dictionary<ArgumentManager.Args, object> arguments)
         {
             Process svnProc = new Process();
 
             svnProc.StartInfo.FileName = m_SvnPath;
-            svnProc.StartInfo.Arguments = GetLogArguments(repoPath, additionalSvnArgs);
+            svnProc.StartInfo.Arguments = GetLogArguments(arguments);
             svnProc.StartInfo.RedirectStandardInput = true;
             svnProc.StartInfo.RedirectStandardOutput = true;
             svnProc.StartInfo.RedirectStandardError = true;
@@ -44,13 +44,19 @@ namespace SVNChangeLogGenerator
             return log;
         }
 
-        private string GetLogArguments(string repoPath, IEnumerable<string> additionalSvnArgs)
+        private string GetLogArguments(Dictionary<ArgumentManager.Args, object> arguments)
         {
-            string args =  m_SvnLogArguments + repoPath;
+            string repoPath = (string)arguments[ArgumentManager.Args.repo];
+            string args = m_SvnLogArguments + repoPath;
 
-            foreach (string addSvnArg in additionalSvnArgs)
+            if (arguments.ContainsKey(ArgumentManager.Args.additionalSvnArgs))
             {
-                args += " " + addSvnArg;
+                List<string> additionalSvnArgs = (List<string>)arguments[ArgumentManager.Args.additionalSvnArgs];
+
+                foreach (string addSvnArg in additionalSvnArgs)
+                {
+                    args += " " + addSvnArg;
+                }
             }
 
             return args;
