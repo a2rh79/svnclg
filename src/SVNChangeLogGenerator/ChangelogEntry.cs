@@ -11,7 +11,8 @@ namespace SVNChangeLogGenerator
     {
         public int StartRevision { get; set; }
         public int EndRevision { get; set; }
-        public string Version { get; set; }
+        private List<string> m_Version = new List<string>();
+        public List<string> Version { get { return m_Version; } set { m_Version = value; } }
         private List<string> m_Authors = new List<string>();
         public List<string> Authors { get { return m_Authors; } set { m_Authors = value; } }
         private List<string> m_Dates = new List<string>();
@@ -22,6 +23,26 @@ namespace SVNChangeLogGenerator
         public List<SvnPath> Paths { get { return m_Paths; } set { m_Paths = value; } }
         private List<int> m_Revisions = new List<int>();
         public List<int> Revisions { get { return m_Revisions; } set { m_Revisions = value; } }
+
+        public string VersionString
+        {
+            get
+            {
+                string version = String.Empty;
+
+                for (int i = 0; i < m_Version.Count; i++)
+                {
+                    version += m_Version[i];
+
+                    if (i != m_Version.Count - 1)
+                    {
+                        version += ".";
+                    }
+                }
+
+                return version;
+            }
+        }
     }
 
     public class SvnPath

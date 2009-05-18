@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="StringTemplate, Version=3.0.1.21733, Culture=neutral, PublicKeyToken=beee492b52c41e85, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\3rdParty\StringTemplate\v3.0.1.net-2.0\net-2.0\StringTemplate.dll</HintPath>
+      <HintPath>..\..\..\..\..\3rdParty\StringTemplate\v3.0.1.net-2.0\net-2.0\StringTemplate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentManager.cs" />
     <Compile Include="ChangelogEntry.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="Help.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SvnExe.cs" />
@@ -70,6 +72,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)\bin\Release\SvnClg.exe repo=http://svnclg.googlecode.com/svn/trunk/ output=$(ProjectDir)\ChangeLog.txt range=all</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <PreBuildEvent>copy $(ProjectDir)Templates\ChangeLog.st $(ProjectDir)$(OutDir)Templates\ChangeLog.st</PreBuildEvent>
   </PropertyGroup>
 </Project>
