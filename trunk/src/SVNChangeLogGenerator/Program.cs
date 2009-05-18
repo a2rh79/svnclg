@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -155,7 +157,7 @@ namespace SVNChangeLogGenerator
             Console.WriteLine();
             Console.WriteLine(@"e.g: SvnClg.exe repo=svn://MyRepo/trunk/Myproject output=D:\ChangeLog.txt range=1-100 version=1.0.0 range=101-200 version=2.0.0 swap");
             Console.WriteLine();
-            Console.WriteLine("For help with StringTemplate, pealse refer to www.StringTemplate.org");
+            Console.WriteLine("For help with StringTemplate, please refer to www.StringTemplate.org");
             
             Environment.Exit(1);
         }
