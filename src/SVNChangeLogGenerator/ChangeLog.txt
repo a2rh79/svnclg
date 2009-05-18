@@ -1,17 +1,9 @@
 ---------------------------------------------------------------------
-16.05.2009 11:35 | Version: 
+17.05.2009 13:08 | Version: 
 
-* added ChangeLog.txt
-* extended help
-* added path output variable
-* added parameter "all" to "range" command
-* extended Help
-* added comments to the stringtemplate
-* when no range/version is declared all revision are written to the changelog in separate entries
-* added help command
-* added commands range, version, swap
-* only messages beginning with an Asterisk (*) will be put into the changelog
+* rename
+* added project
 
 
-Generated with Subversion Changelog Generator 0.1.3423.19089
-Copyright © CharlieFirpo 2009
+Generated with Subversion Changelog Generator 0.1.3425.18287
+Copyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>

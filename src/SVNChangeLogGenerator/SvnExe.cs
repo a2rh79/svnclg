@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

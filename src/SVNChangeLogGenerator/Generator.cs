@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,7 +96,7 @@ namespace SVNChangeLogGenerator
 
         private string SetStringTemplate(List<ChangelogEntry> clEntries)
         {
-            StringTemplate changeLog = new StringTemplate("$logEntry; separator=\"\\n\"$\r\nGenerated with Subversion Changelog Generator $currentVersion$\r\nCopyright © CharlieFirpo 2009");
+            StringTemplate changeLog = new StringTemplate("$logEntry; separator=\"\\n\"$\r\nGenerated with Subversion Changelog Generator $currentVersion$\r\nCopyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>");
             changeLog.SetAttribute("currentVersion", Program.AssemblyVersion);
 
             foreach (ChangelogEntry cle in clEntries)
