@@ -18,6 +18,11 @@ namespace SVNChangeLogGenerator
         {
             Process svnProc = new Process();
 
+            if (arguments.ContainsKey(ArgumentManager.Args.svnPath))
+            {
+                m_SvnPath = (string)arguments[ArgumentManager.Args.svnPath];
+            }
+
             svnProc.StartInfo.FileName = m_SvnPath;
             svnProc.StartInfo.Arguments = GetLogArguments(arguments);
             svnProc.StartInfo.RedirectStandardInput = true;

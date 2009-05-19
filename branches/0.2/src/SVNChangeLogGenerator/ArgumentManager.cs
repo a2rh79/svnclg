@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace SVNChangeLogGenerator
 {
@@ -9,14 +10,13 @@ namespace SVNChangeLogGenerator
     {
         public enum Args
         {
-            repo,
-            output,
-            range,
-            version,
-            swap,
-            help,
-            ranges,
-            additionalSvnArgs
+            repo,                   // string
+            output,                 // string
+            ranges,                 // List<ChangeLogEntry>
+            swap,                   // bool
+            additionalSvnArgs,      // List<string>
+            svnPath,                // string
+            escapeChar              // char
         }
 
         public static Dictionary<Args, object> ProcessArgs(string[] args)
@@ -24,6 +24,8 @@ namespace SVNChangeLogGenerator
             Dictionary<Args, object> arguments = new Dictionary<Args, object>();
             List<ChangelogEntry> ranges = new List<ChangelogEntry>();
             List<string> additionalSvnArgs = new List<string>();
+
+            LoadConfig(arguments);
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -34,13 +36,13 @@ namespace SVNChangeLogGenerator
                     case "repo":
                         if (!String.IsNullOrEmpty(tokens[1]))
                         {
-                            arguments.Add(Args.repo, tokens[1]);
+                            arguments[Args.repo] = tokens[1];
                         }
                         break;
                     case "output":
                         if (!String.IsNullOrEmpty(tokens[1]))
                         {
-                            arguments.Add(Args.output, tokens[1]);
+                            arguments[Args.output] = tokens[1];
                         }
                         break;
                     case "range":
@@ -61,7 +63,7 @@ namespace SVNChangeLogGenerator
                     case "version":
                         break;
                     case "swap":
-                        arguments.Add(Args.swap, true);
+                        arguments[Args.swap] = true;
                         break;
                     case "help":
                         Help.ShowHelp();
@@ -82,6 +84,19 @@ namespace SVNChangeLogGenerator
             }
 
             return arguments;
+        }
+
+        private static void LoadConfig(Dictionary<Args, object> arguments)
+        {
+            string svnPath = System.Configuration.ConfigurationManager.AppSettings["svnPath"];
+            if (File.Exists(svnPath))
+            {
+                arguments.Add(Args.svnPath, svnPath);
+            }
+            string repoPath = System.Configuration.ConfigurationManager.AppSettings["repoPath"];
+            arguments.Add(Args.repo, repoPath);
+            string escChar = System.Configuration.ConfigurationManager.AppSettings["escapeChar"];
+            arguments.Add(Args.escapeChar, Convert.ToChar(escChar));
         }
 
         private static List<ChangelogEntry> GetChangeLogEntries(string token, string version)
@@ -105,7 +120,7 @@ namespace SVNChangeLogGenerator
                     int.TryParse(subTokens[1], out end);
                     cle.EndRevision = end;
                 }
-                else if (subTokens[0] == "all")
+                else if (subTokens[0] == "all" || subTokens[0] == "...")
                 {
                     cle.StartRevision = -1;
                 }
@@ -123,6 +138,5 @@ namespace SVNChangeLogGenerator
 
             return entries;
         }
-
     }
 }
