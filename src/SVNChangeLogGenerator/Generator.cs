@@ -12,11 +12,13 @@ namespace SVNChangeLogGenerator
     class Generator
     {
         private StringTemplateGroup m_ClGrp = new StringTemplateGroup("ChangeLogGroup", (string)null);
+        private Dictionary<ArgumentManager.Args, object> m_Arguments = new Dictionary<ArgumentManager.Args, object>();
 
         public string GenerateLog(XmlDocument log, Dictionary<ArgumentManager.Args, object> arguments)
         {
             XmlNodeList logEntries = log.GetElementsByTagName("logentry");
             List<ChangelogEntry> clEntries;
+            m_Arguments = arguments;
 
             if (arguments.ContainsKey(ArgumentManager.Args.ranges))
             {
@@ -40,6 +42,7 @@ namespace SVNChangeLogGenerator
                         if ((revision >= cle.StartRevision && revision <= cle.EndRevision) || cle.StartRevision == -1)
                         {
                             PopulateChangeLogEntry(node, cle, revision);
+                            break;
                         }
                     }
                 }
@@ -124,10 +127,12 @@ namespace SVNChangeLogGenerator
 
             foreach (string s in messages)
             {
-                if (s.Trim()[0] == '*')
+                if (s.Trim()[0] == (char)m_Arguments[ArgumentManager.Args.escapeChar])
                 {
-                    retVal.Add(s);
+                    continue;
                 }
+
+                retVal.Add(s.Trim());
             }
 
             return retVal;

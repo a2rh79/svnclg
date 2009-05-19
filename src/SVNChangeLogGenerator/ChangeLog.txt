@@ -1,15 +1,18 @@
 ---------------------------------------------------------------------
-18.05.2009 12:57 | Version: 1.0.1
+18.05.2009 19:19 | Version: 
 
+* ranges can now be separated by commas (e.g. range=1-30,31-60)
+* versions can also be separated by commas and will be assigned to the corresponding range e.g. range=1-30,31-60 version=1.0.0,1.0.1 would be the same as range=1-30 version=1.0.0 range=31-60 version=1.0.1
 * added copyright notes
 * rename
 
 
 ---------------------------------------------------------------------
-17.05.2009 12:58 | Version: 1.0.0
+17.05.2009 12:58 | Version: 
 
 * added project
+Initial directory structure.
 
 
-Generated with Subversion Changelog Generator 0.2.3425.32764
+Generated with Subversion Changelog Generator 0.2.3426.18296
 Copyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>
