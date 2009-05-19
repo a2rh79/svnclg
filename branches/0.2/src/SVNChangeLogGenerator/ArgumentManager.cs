@@ -16,7 +16,8 @@ namespace SVNChangeLogGenerator
             swap,                   // bool
             additionalSvnArgs,      // List<string>
             svnPath,                // string
-            escapeChar              // char
+            escapeChar,             // char
+            textWidth               // int
         }
 
         public static Dictionary<Args, object> ProcessArgs(string[] args)
@@ -25,7 +26,7 @@ namespace SVNChangeLogGenerator
             List<ChangelogEntry> ranges = new List<ChangelogEntry>();
             List<string> additionalSvnArgs = new List<string>();
 
-            LoadConfig(arguments);
+            LoadConfigFromFile(arguments);
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -68,6 +69,9 @@ namespace SVNChangeLogGenerator
                     case "help":
                         Help.ShowHelp();
                         break;
+                    case "nowrap":
+                        arguments[Args.textWidth] = -1;
+                        break;
                     default:
                         additionalSvnArgs.Add(tokens[0]);
                         break;
@@ -86,7 +90,7 @@ namespace SVNChangeLogGenerator
             return arguments;
         }
 
-        private static void LoadConfig(Dictionary<Args, object> arguments)
+        private static void LoadConfigFromFile(Dictionary<Args, object> arguments)
         {
             string svnPath = System.Configuration.ConfigurationManager.AppSettings["svnPath"];
             if (File.Exists(svnPath))
@@ -97,6 +101,9 @@ namespace SVNChangeLogGenerator
             arguments.Add(Args.repo, repoPath);
             string escChar = System.Configuration.ConfigurationManager.AppSettings["escapeChar"];
             arguments.Add(Args.escapeChar, Convert.ToChar(escChar));
+            int textWidth;
+            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["textWidth"], out textWidth);
+            arguments.Add(Args.textWidth, (int)textWidth);
         }
 
         private static List<ChangelogEntry> GetChangeLogEntries(string token, string version)
