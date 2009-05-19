@@ -105,7 +105,7 @@ namespace SVNChangeLogGenerator
             foreach (ChangelogEntry cle in clEntries)
             {
                 if (cle.Msg.Count > 0)
-                {
+                {                    
                     StringTemplate logEntry = m_ClGrp.GetInstanceOf("Templates/ChangeLog");
                     logEntry.SetAttribute("date", cle.Dates[0]);
                     logEntry.SetAttribute("version", cle.VersionString);
@@ -124,6 +124,12 @@ namespace SVNChangeLogGenerator
         {
             string[] messages = msg.Trim().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             List<string> retVal = new List<string>();
+            int textWidth = 70;
+
+            if (m_Arguments.ContainsKey(ArgumentManager.Args.textWidth))
+            {
+                textWidth = (int)m_Arguments[ArgumentManager.Args.textWidth];
+            }
 
             foreach (string s in messages)
             {
@@ -132,7 +138,14 @@ namespace SVNChangeLogGenerator
                     continue;
                 }
 
-                retVal.Add(s.Trim());
+                if (textWidth == -1)    // nowrap
+                {
+                    retVal.Add(s);
+                }
+                else
+                {
+                    retVal.AddRange(WrapText(s, textWidth));
+                }
             }
 
             return retVal;
@@ -187,6 +200,31 @@ namespace SVNChangeLogGenerator
             DateTime dt = DateTime.Parse(date);
 
             return dt.ToShortDateString() + " " + dt.ToShortTimeString();
+        }
+
+        private static List<string> WrapText(string text, int width)
+        {
+            text = text.Replace(Environment.NewLine, " ");
+
+            string[] words = text.Split(' ');
+            string line = String.Empty;
+            List<string> wrappedText = new List<string>();
+
+            foreach (string word in words)
+            {
+                if (line.Length + word.Length <= width)
+                {
+                    line += word + " ";
+                }
+                else
+                {
+                    wrappedText.Add(line.Trim());
+                    line = word + " ";
+                }
+            }
+            wrappedText.Add(line.Trim());
+
+            return wrappedText;
         }
     }
 }
