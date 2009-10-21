@@ -1,9 +1,38 @@
----------------------------------------------------------------------
-17.05.2009 13:08 | Version: 
+----------------------------------------------------------------------
+21.10.2009 15:39 | Version: 2.1
+
+* added textwidth/tw command
+* added textwrap -> line/text width can be specified in the .config
+file property textWidth (a value of -1 means nowrap)
+* added .config file that stores the default path to svn.exe (only
+needed when its not registered), a default repository path and the
+escape character.
+Log entries/lines beginning with the escape char will be ignored now.
+* added parameter: range=... is the same as range=all
+
+
+----------------------------------------------------------------------
+18.05.2009 19:19 | Version: 2.0
+
+* ranges can now be separated by commas (e.g. range=1-30,31-60)
+* versions can also be separated by commas and will be assigned to the
+corresponding range e.g. range=1-30,31-60 version=1.0.0,1.0.1 would be
+the same as range=1-30 version=1.0.0 range=31-60 version=1.0.1
+
+
+----------------------------------------------------------------------
+18.05.2009 18:29 | Version: 1.1
+
+* added copyright notes
+
+
+----------------------------------------------------------------------
+17.05.2009 13:08 | Version: 1.0
 
 * rename
 * added project
+Initial directory structure.
 
 
-Generated with Subversion Changelog Generator 0.1.3425.18287
+Generated with Subversion Changelog Generator 0.2.3581.27938
 Copyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>
