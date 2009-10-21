@@ -42,19 +42,21 @@ namespace SVNChangeLogGenerator
                         }
                         break;
                     case "output":
+                    case "o":
                         if (!String.IsNullOrEmpty(tokens[1]))
                         {
                             arguments[Args.output] = tokens[1];
                         }
                         break;
                     case "range":
+                    case "r":
                         if (!String.IsNullOrEmpty(tokens[1]))
                         {
                             string version = String.Empty;
                             if (args.Length > (i + 1))
                             {
                                 string[] ver = args[i + 1].Split('=');
-                                if (ver[0] == "version" && !String.IsNullOrEmpty(ver[1]))
+                                if ((ver[0] == "version" || ver[0] == "v") && !String.IsNullOrEmpty(ver[1]))
                                 {
                                     version = ver[1];
                                 }
@@ -63,6 +65,7 @@ namespace SVNChangeLogGenerator
                         }
                         break;
                     case "version":
+                    case "v":
                         break;
                     case "swap":
                         arguments[Args.swap] = true;
@@ -121,7 +124,9 @@ namespace SVNChangeLogGenerator
             // Get Range
             string[] ranges = token.Split(',');
             string[] versions = version.Split(',');
+            List<string> versionsList = new List<string>(versions);
             List<ChangelogEntry> entries = new List<ChangelogEntry>();
+            int addver = 0;
 
             for (int i = 0; i < ranges.Length; i++)
             {
@@ -143,9 +148,36 @@ namespace SVNChangeLogGenerator
                 }
 
                 // Get Version
-                if (i < versions.Length)
+                if (i < versionsList.Count)
                 {
-                    string[] ver = versions[i].Split('.');
+                    string[] ver = versionsList[i].Split('.');
+
+                    for (int j = 0; j < ver.Length; j++)
+                    {
+                        if (ver[j].Contains("*"))
+                        {
+                            // incrementing version number
+                            if (ver[j].Length > 1)
+                            {
+                                // get version number to start with
+                                ver[j] = ver[j].Replace("*", "");
+                                ver[j] = ver[j].Trim();
+
+                                int sv;
+                                int.TryParse(ver[j], out sv);
+                                sv = sv + addver;
+                                addver++;
+                                ver[j] = sv.ToString();
+                            }
+                            else
+                            {
+                                ver[j] = (0 + addver).ToString();
+                                addver++;
+                            }
+
+                            versionsList.Add(versionsList[i]);
+                        }
+                    }
 
                     cle.Version.AddRange(ver);
                 }
