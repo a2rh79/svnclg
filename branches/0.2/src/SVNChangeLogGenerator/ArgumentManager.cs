@@ -28,6 +28,7 @@ namespace SVNChangeLogGenerator
 
             LoadConfigFromFile(arguments);
 
+            // override config with command line arguments
             for (int i = 0; i < args.Length; i++)
             {
                 string[] tokens = args[i].Split('=');

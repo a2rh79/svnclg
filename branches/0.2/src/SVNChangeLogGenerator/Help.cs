@@ -23,6 +23,7 @@ namespace SVNChangeLogGenerator
             //Console.WriteLine("     continue    - Merges all revisions since the last time SvnClg.exe was executed (stored in *.cfg)");
             Console.WriteLine("version      - The version of the preceding range");
             Console.WriteLine("swap         - Swaps the order of the entries");
+            Console.WriteLine("nowrap       - disables text wrap");
             Console.WriteLine();
             Console.WriteLine("Note: The \"version\" command only works with a preceding \"range\" command.");
             Console.WriteLine();
