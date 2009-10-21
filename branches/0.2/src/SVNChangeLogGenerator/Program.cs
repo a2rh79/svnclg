@@ -15,7 +15,7 @@ namespace SVNChangeLogGenerator
 
         static void Main(string[] args)
         {
-            // commands: range=continue/... version=1.0.*/1.0.*x textwidth
+            // commands: version=1.0.*/1.0.*x
             try
             {
                 SvnExe svnExe = new SvnExe();
