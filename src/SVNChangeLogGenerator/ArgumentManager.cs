@@ -73,6 +73,15 @@ namespace SVNChangeLogGenerator
                     case "nowrap":
                         arguments[Args.textWidth] = -1;
                         break;
+                    case "textwidth":
+                    case "tw":
+                        if (!String.IsNullOrEmpty(tokens[1]))
+                        {
+                            int textWidth;
+                            int.TryParse(tokens[1], out textWidth);
+                            arguments[Args.textWidth] = textWidth;
+                        }
+                        break;
                     default:
                         additionalSvnArgs.Add(tokens[0]);
                         break;
