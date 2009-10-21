@@ -11,16 +11,18 @@ namespace SVNChangeLogGenerator
 {
     class Generator
     {
-        StringTemplateGroup m_ClGrp = new StringTemplateGroup("ChangeLogGroup", (string)null);
+        private StringTemplateGroup m_ClGrp = new StringTemplateGroup("ChangeLogGroup", (string)null);
+        private Dictionary<ArgumentManager.Args, object> m_Arguments = new Dictionary<ArgumentManager.Args, object>();
 
-        public string GenerateLog(XmlDocument log, Dictionary<string, object> additionalClgArgs)
+        public string GenerateChangeLog(XmlDocument log, Dictionary<ArgumentManager.Args, object> arguments)
         {
             XmlNodeList logEntries = log.GetElementsByTagName("logentry");
             List<ChangelogEntry> clEntries;
+            m_Arguments = arguments;
 
-            if (additionalClgArgs.ContainsKey("Ranges"))
+            if (arguments.ContainsKey(ArgumentManager.Args.ranges))
             {
-                clEntries = (List<ChangelogEntry>)additionalClgArgs["Ranges"];
+                clEntries = (List<ChangelogEntry>)arguments[ArgumentManager.Args.ranges];
             }
             else
             {
@@ -33,13 +35,14 @@ namespace SVNChangeLogGenerator
                 int revision;
                 int.TryParse(revisionString, out revision);
 
-                if (additionalClgArgs.ContainsKey("Ranges"))
+                if (arguments.ContainsKey(ArgumentManager.Args.ranges))
                 {
                     foreach (ChangelogEntry cle in clEntries)
                     {
                         if ((revision >= cle.StartRevision && revision <= cle.EndRevision) || cle.StartRevision == -1)
                         {
                             PopulateChangeLogEntry(node, cle, revision);
+                            break;
                         }
                     }
                 }
@@ -53,7 +56,7 @@ namespace SVNChangeLogGenerator
                 }
             }
 
-            if (additionalClgArgs.ContainsKey("Swap"))
+            if (arguments.ContainsKey(ArgumentManager.Args.swap))
             {
                 clEntries.Reverse();
             }
@@ -102,10 +105,10 @@ namespace SVNChangeLogGenerator
             foreach (ChangelogEntry cle in clEntries)
             {
                 if (cle.Msg.Count > 0)
-                {
+                {                    
                     StringTemplate logEntry = m_ClGrp.GetInstanceOf("Templates/ChangeLog");
                     logEntry.SetAttribute("date", cle.Dates[0]);
-                    logEntry.SetAttribute("version", cle.Version);
+                    logEntry.SetAttribute("version", cle.VersionString);
                     logEntry.SetAttribute("revisions", cle.Revisions);
                     logEntry.SetAttribute("msg", cle.Msg);
                     logEntry.SetAttribute("path", cle.Paths);
@@ -121,12 +124,27 @@ namespace SVNChangeLogGenerator
         {
             string[] messages = msg.Trim().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             List<string> retVal = new List<string>();
+            int textWidth = 70;
+
+            if (m_Arguments.ContainsKey(ArgumentManager.Args.textWidth))
+            {
+                textWidth = (int)m_Arguments[ArgumentManager.Args.textWidth];
+            }
 
             foreach (string s in messages)
             {
-                if (s.Trim()[0] == '*')
+                if (s.Trim()[0] == (char)m_Arguments[ArgumentManager.Args.escapeChar])
+                {
+                    continue;
+                }
+
+                if (textWidth == -1)    // nowrap
                 {
                     retVal.Add(s);
+                }
+                else
+                {
+                    retVal.AddRange(WrapText(s, textWidth));
                 }
             }
 
@@ -182,6 +200,31 @@ namespace SVNChangeLogGenerator
             DateTime dt = DateTime.Parse(date);
 
             return dt.ToShortDateString() + " " + dt.ToShortTimeString();
+        }
+
+        private static List<string> WrapText(string text, int width)
+        {
+            text = text.Replace(Environment.NewLine, " ");
+
+            string[] words = text.Split(' ');
+            string line = String.Empty;
+            List<string> wrappedText = new List<string>();
+
+            foreach (string word in words)
+            {
+                if (line.Length + word.Length <= width)
+                {
+                    line += word + " ";
+                }
+                else
+                {
+                    wrappedText.Add(line.Trim());
+                    line = word + " ";
+                }
+            }
+            wrappedText.Add(line.Trim());
+
+            return wrappedText;
         }
     }
 }
