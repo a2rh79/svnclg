@@ -32,7 +32,7 @@ namespace SVNChangeLogGenerator
                 Console.WriteLine("Generating Changelog...");
 
                 Generator clGen = new Generator();
-                string outputLog = clGen.GenerateLog(log, arguments);
+                string outputLog = clGen.GenerateChangeLog(log, arguments);
 
                 File.WriteAllText((string)arguments[ArgumentManager.Args.output], outputLog);
             

@@ -14,7 +14,7 @@ namespace SVNChangeLogGenerator
         private StringTemplateGroup m_ClGrp = new StringTemplateGroup("ChangeLogGroup", (string)null);
         private Dictionary<ArgumentManager.Args, object> m_Arguments = new Dictionary<ArgumentManager.Args, object>();
 
-        public string GenerateLog(XmlDocument log, Dictionary<ArgumentManager.Args, object> arguments)
+        public string GenerateChangeLog(XmlDocument log, Dictionary<ArgumentManager.Args, object> arguments)
         {
             XmlNodeList logEntries = log.GetElementsByTagName("logentry");
             List<ChangelogEntry> clEntries;
