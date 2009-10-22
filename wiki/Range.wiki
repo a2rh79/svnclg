@@ -6,4 +6,9 @@ Usage of the `range` command
 
 
 = Details =
+To specify a range of revisions the following parameters can be used:<br>
+- `r=x-y` Where x is the start revision number an y the end revision number. E.g. ``r=1-50`<br>
+- `r=all` or `r=...` All revisions/log entries will be merged to one ChangeLog entry
 
+Multiple ranges can be sparated by commas:<br>
+E.g. `r=1-50,51-100,...` This will generate 3 ChangeLog entries. The first for the revisions 1-50, the second for the revisions 51-100 and the third for all remaining revisions
