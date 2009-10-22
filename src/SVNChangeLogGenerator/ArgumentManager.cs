@@ -112,6 +112,8 @@ namespace SVNChangeLogGenerator
             }
             string repoPath = System.Configuration.ConfigurationManager.AppSettings["repoPath"];
             arguments.Add(Args.repo, repoPath);
+            string outputPath = System.Configuration.ConfigurationManager.AppSettings["outputPath"];
+            arguments.Add(Args.output, outputPath);
             string escChar = System.Configuration.ConfigurationManager.AppSettings["escapeChar"];
             arguments.Add(Args.escapeChar, Convert.ToChar(escChar));
             int textWidth;
