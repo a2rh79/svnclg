@@ -111,7 +111,7 @@ namespace SVNChangeLogGenerator
                     logEntry.SetAttribute("version", cle.VersionString);
                     logEntry.SetAttribute("revisions", cle.Revisions);
                     logEntry.SetAttribute("msg", cle.Msg);
-                    logEntry.SetAttribute("path", cle.Paths);
+                    logEntry.SetAttribute("paths", cle.Paths);
                     logEntry.SetAttribute("authors", cle.Authors);
                     changeLog.SetAttribute("logEntry", logEntry);
                 }
