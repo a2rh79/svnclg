@@ -58,7 +58,19 @@ namespace SVNChangeLogGenerator
 
             if (arguments.ContainsKey(ArgumentManager.Args.swap))
             {
-                clEntries.Reverse();
+                if ((bool)arguments[ArgumentManager.Args.swap])
+                    clEntries.Reverse();
+            }
+
+            if (arguments.ContainsKey(ArgumentManager.Args.iswap))
+            {
+                if ((bool)arguments[ArgumentManager.Args.iswap])
+                {
+                    foreach (ChangelogEntry cle in clEntries)
+                    {
+                        cle.Msg.Reverse();
+                    }
+                }
             }
 
             string changeLog = SetStringTemplate(clEntries);
@@ -88,7 +100,8 @@ namespace SVNChangeLogGenerator
                         break;
                     case "msg":
                         List<string> msg = FormatMessage(innerText);
-                        cle.Msg.AddRange(msg);
+                        if (msg.Count > 0)
+                            cle.Msg.Add(msg);
                         break;
                     case "paths":
                         GetPaths(childNode, cle);
@@ -133,7 +146,7 @@ namespace SVNChangeLogGenerator
 
             foreach (string s in messages)
             {
-                if (s.Trim()[0] == (char)m_Arguments[ArgumentManager.Args.escapeChar])
+                if (s.Trim()[0] == Convert.ToChar(m_Arguments[ArgumentManager.Args.escapeChar]))
                 {
                     continue;
                 }

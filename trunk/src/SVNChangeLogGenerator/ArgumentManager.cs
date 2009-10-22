@@ -14,6 +14,7 @@ namespace SVNChangeLogGenerator
             output,                 // string
             ranges,                 // List<ChangeLogEntry>
             swap,                   // bool
+            iswap,                  // bool
             additionalSvnArgs,      // List<string>
             svnPath,                // string
             escapeChar,             // char
@@ -35,6 +36,13 @@ namespace SVNChangeLogGenerator
 
                 switch (tokens[0].ToLower())
                 {
+                    case "svnpath":
+                        if (!String.IsNullOrEmpty(tokens[1]))
+                        {
+                            if (File.Exists(tokens[1]))
+                                arguments[Args.svnPath] = tokens[1];
+                        }
+                        break;
                     case "repo":
                         if (!String.IsNullOrEmpty(tokens[1]))
                         {
@@ -68,13 +76,20 @@ namespace SVNChangeLogGenerator
                     case "v":
                         break;
                     case "swap":
-                        arguments[Args.swap] = true;
+                        if (!String.IsNullOrEmpty(tokens[1]))
+                        {
+                            arguments[Args.swap] = Convert.ToBoolean(tokens[1]);
+                        }
+                        break;
+                    case "innerswap":
+                    case "iswap":
+                        if (!String.IsNullOrEmpty(tokens[1]))
+                        {
+                            arguments[Args.iswap] = Convert.ToBoolean(tokens[1]);
+                        }
                         break;
                     case "help":
                         Help.ShowHelp();
-                        break;
-                    case "nowrap":
-                        arguments[Args.textWidth] = -1;
                         break;
                     case "textwidth":
                     case "tw":
@@ -83,6 +98,13 @@ namespace SVNChangeLogGenerator
                             int textWidth;
                             int.TryParse(tokens[1], out textWidth);
                             arguments[Args.textWidth] = textWidth;
+                        }
+                        break;
+                    case "escapeChar":
+                    case "esc":
+                        if (!String.IsNullOrEmpty(tokens[1]))
+                        {
+                            arguments[Args.escapeChar] = tokens[1][0];
                         }
                         break;
                     default:
@@ -119,6 +141,10 @@ namespace SVNChangeLogGenerator
             int textWidth;
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["textWidth"], out textWidth);
             arguments.Add(Args.textWidth, (int)textWidth);
+            bool swap = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["swap"]);
+            arguments.Add(Args.swap, swap);
+            bool iswap = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["innerSwap"]);
+            arguments.Add(Args.iswap, iswap);
         }
 
         private static List<ChangelogEntry> GetChangeLogEntries(string token, string version)
