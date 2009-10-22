@@ -1,38 +1,45 @@
 ----------------------------------------------------------------------
-21.10.2009 15:39 | Version: 2.1
+22.10.2009 14:02 | Version: 0.2.1
 
-* added textwidth/tw command
-* added textwrap -> line/text width can be specified in the .config
-file property textWidth (a value of -1 means nowrap)
-* added .config file that stores the default path to svn.exe (only
-needed when its not registered), a default repository path and the
-escape character.
-Log entries/lines beginning with the escape char will be ignored now.
-* added parameter: range=... is the same as range=all
+Edited wiki page through web user interface.
 
 
 ----------------------------------------------------------------------
-18.05.2009 19:19 | Version: 2.0
+22.10.2009 13:27 | Version: 0.2
 
 * ranges can now be separated by commas (e.g. range=1-30,31-60)
 * versions can also be separated by commas and will be assigned to the
 corresponding range e.g. range=1-30,31-60 version=1.0.0,1.0.1 would be
 the same as range=1-30 version=1.0.0 range=31-60 version=1.0.1
+* added .config file that stores the default path to svn.exe (only
+needed when its not registered), a default repository path and the
+escape character.
+Log entries/lines beginning with the escape char will be ignored now.
+* added parameter: range=... is the same as range=all
+* added textwrap -> line/text width can be specified in the .config
+file property textWidth (a value of -1 means nowrap)
+* added textwidth/tw command
+* added shorter commands: output -> o, range -> r, version -> v,
+textwidth -> tw
+* added option to specify version number with a *.
+E.g. 1.1.* The * will then be automatically replaced by a 0 and will
+be incremented by 1 with each given range, i.e. 1.1.0, 1.1.1, ...
+or 1.1.5* The version number will be incremented by 1, starting with
+the given number (in this case 5), i.e. 1.1.5, 1.1.6, ...
+Created wiki page through web user interface.
+Edited wiki page through web user interface.
+Created wiki page through web user interface.
+* added output variable to config file
 
 
 ----------------------------------------------------------------------
-18.05.2009 18:29 | Version: 1.1
+18.05.2009 18:31 | Version: 0.1
 
+Initial directory structure.
+* added project
+* rename
 * added copyright notes
 
 
-----------------------------------------------------------------------
-17.05.2009 13:08 | Version: 1.0
-
-* rename
-* added project
-Initial directory structure.
-
-
-Generated with Subversion Changelog Generator 0.2.3581.27938
+Generated with Subversion Changelog Generator 0.2.1.27952
 Copyright © CharlieFirpo 2009 <Firpo.Charlie@googlemail.com>

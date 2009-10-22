@@ -17,8 +17,8 @@ namespace SVNChangeLogGenerator
         public List<string> Authors { get { return m_Authors; } set { m_Authors = value; } }
         private List<string> m_Dates = new List<string>();
         public List<string> Dates { get { return m_Dates; } set { m_Dates = value; } }
-        private List<string> m_Msg = new List<string>();
-        public List<string> Msg { get { return m_Msg; } set { m_Msg = value; } }
+        private List<List<string>> m_Msg = new List<List<string>>();
+        public List<List<string>> Msg { get { return m_Msg; } set { m_Msg = value; } }
         private List<SvnPath> m_Paths = new List<SvnPath>();
         public List<SvnPath> Paths { get { return m_Paths; } set { m_Paths = value; } }
         private List<int> m_Revisions = new List<int>();
