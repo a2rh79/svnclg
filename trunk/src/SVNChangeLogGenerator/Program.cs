@@ -9,6 +9,7 @@ using System.Xml;
 
 namespace SVNChangeLogGenerator
 {
+    // swap to noswap, innerswap, evtl. output in dr config
     class Program
     {
         public static string AssemblyVersion { get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }

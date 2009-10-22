@@ -19,7 +19,7 @@ namespace SVNChangeLogGenerator
             Console.WriteLine("range / r        - A range of revisions that shall be merged to one log entry");
             Console.WriteLine("                 Parameters:");
             Console.WriteLine("                 x-y         - Specifies a range from revision x to revision y");
-            Console.WriteLine("                 all         - Merges all revisions to one entry");
+            Console.WriteLine("                 all / ...   - Merges all revisions to one entry");
             //Console.WriteLine("     continue    - Merges all revisions since the last time SvnClg.exe was executed (stored in *.cfg)");
             Console.WriteLine("version / v      - The version of the preceding range");
             Console.WriteLine("swap             - Swaps the order of the entries");
